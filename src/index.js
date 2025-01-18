@@ -8,6 +8,7 @@ const {
 } = require("./routes");
 
 const morgan = require("morgan");
+const cors = require("cors");
 
 const envFile =
   process.env.NODE_ENV === "production" ? "./.env.prod" : "./.env.local";
@@ -18,6 +19,8 @@ dotenv.config({
 const PORT = Number(process.env.PORT) || 8000;
 
 const app = express();
+
+app.use(cors({}));
 
 app.use(express.json());
 
