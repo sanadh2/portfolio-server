@@ -16,7 +16,7 @@ const envFile =
 dotenv.config({
   path: envFile,
 });
-const PORT = Number(process.env.PORT) || 8000;
+// const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 
@@ -38,15 +38,6 @@ app.use("/skills", skillRoute);
 
 app.use("/workExperience", workExperienceRoute);
 
-app.listen(PORT, "localhost", () => {
-  const environment =
-    process.env.NODE_ENV === "PRODUCTION" ? "production env" : "develop env";
-
-  console.log(
-    "app is running on localhost:" +
-      PORT +
-      " in environment \x1b[33m" +
-      environment +
-      "\x1b[0m"
-  );
-});
+module.exports = (req, res) => {
+  app(req, res);
+};
