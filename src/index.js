@@ -16,7 +16,6 @@ const envFile =
 dotenv.config({
   path: envFile,
 });
-// const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
 

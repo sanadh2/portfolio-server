@@ -4,7 +4,6 @@ const {
   varchar,
   text,
   timestamp,
-  json,
 } = require("drizzle-orm/pg-core");
 const { sql } = require("drizzle-orm");
 
@@ -14,7 +13,10 @@ const projectsTable = pgTable("projects", {
     .primaryKey(),
   title: varchar("title", { length: 200 }).notNull(),
   description: text("description").notNull(),
-  techStack: json("tech_stack"),
+  techStack: text("techStack")
+    .array()
+    .notNull()
+    .default(sql`'{}'::text[]`),
   imageUrl: varchar("image_url", { length: 500 }),
   projectUrl: varchar("project_url", { length: 500 }),
   repoUrl: varchar("repo_url", { length: 500 }),
