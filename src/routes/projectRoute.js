@@ -69,7 +69,7 @@ const newProjectSchema = z.object({
 
 router.post("/new", async (req, res) => {
   try {
-    logger.info("Creating new project...");
+    logger.info("Creating new project with ...", req.body);
     const { success, data, error } = newProjectSchema.safeParse(req.body);
     if (!success) {
       const zodError = messageBuilder(error.issues).toString();
