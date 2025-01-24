@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const { educationTable } = require("../config/db/schema").default;
+const { educationTable } = require("../config/db/schema");
 const { db } = require("../config/db/index");
 const { z } = require("zod");
 const { createMessageBuilder } = require("zod-validation-error");

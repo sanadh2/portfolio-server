@@ -17,13 +17,12 @@ const projectsTable = pgTable("projects", {
     .array()
     .notNull()
     .default(sql`'{}'::text[]`),
-  imageUrl: varchar("image_url", { length: 500 }),
-  projectUrl: varchar("project_url", { length: 500 }),
-  repoUrl: varchar("repo_url", { length: 500 }),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  imageUrl: varchar("imageUrl", { length: 500 }),
+  projectUrl: varchar("projectUrl", { length: 500 }),
+  repoUrl: varchar("repoUrl", { length: 500 }),
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow(),
 });
 
-// Skills Table
 const skillsTable = pgTable("skills", {
   id: uuid("id")
     .default(sql`gen_random_uuid()`)
@@ -33,33 +32,30 @@ const skillsTable = pgTable("skills", {
   proficiency: varchar("proficiency", { length: 10 }),
 });
 
-// Work Experience Table
-const workExperienceTable = pgTable("work_experience", {
+const workExperienceTable = pgTable("workExperience", {
   id: uuid("id")
     .default(sql`gen_random_uuid()`)
     .primaryKey(),
-  companyName: varchar("company_name", { length: 255 }).notNull(),
+  companyName: varchar("companyName", { length: 255 }).notNull(),
   role: varchar("role", { length: 255 }).notNull(),
   description: text("description"),
-  startDate: timestamp("start_date", { withTimezone: true }),
-  endDate: timestamp("end_date", { withTimezone: true }),
-  logoUrl: varchar("logo_url", { length: 500 }),
+  startDate: timestamp("startDate", { withTimezone: true }),
+  endDate: timestamp("endDate", { withTimezone: true }),
+  logoUrl: varchar("logoUrl", { length: 500 }),
 });
 
-// Education Table
 const educationTable = pgTable("education", {
   id: uuid("id")
     .default(sql`gen_random_uuid()`)
     .primaryKey(),
-  institutionName: varchar("institution_name", { length: 255 }).notNull(),
+  institutionName: varchar("institutionName", { length: 255 }).notNull(),
   degree: varchar("degree", { length: 255 }).notNull(),
-  startDate: timestamp("start_date", { withTimezone: true }),
-  endDate: timestamp("end_date", { withTimezone: true }),
+  startDate: timestamp("startDate", { withTimezone: true }),
+  endDate: timestamp("endDate", { withTimezone: true }),
   location: varchar("location", { length: 255 }),
-  logoUrl: varchar("logo_url", { length: 500 }),
+  logoUrl: varchar("logoUrl", { length: 500 }),
 });
 
-// Contact Table
 const contactTable = pgTable("contact", {
   id: uuid("id")
     .default(sql`gen_random_uuid()`)
@@ -67,7 +63,7 @@ const contactTable = pgTable("contact", {
   name: varchar("name", { length: 100 }),
   email: varchar("email", { length: 255 }),
   message: text("message"),
-  submittedAt: timestamp("submitted_at", { withTimezone: true }).defaultNow(),
+  submittedAt: timestamp("submittedAt", { withTimezone: true }).defaultNow(),
 });
 
 module.exports = {

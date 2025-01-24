@@ -1,12 +1,12 @@
 const { drizzle: neonDrizzle } = require("drizzle-orm/neon-http");
 const { neon } = require("@neondatabase/serverless");
-const { drizzle: postgreDrizzle } = require("drizzle-orm/postgres-js");
-const postgres = require("postgres");
+// const { drizzle: postgreDrizzle } = require("drizzle-orm/postgres-js");
+// const postgres = require("postgres");
 const dotenv = require("dotenv");
 const schema = require("./schema");
 
-const envFile =
-  process.env.NODE_ENV === "PRODUCTION" ? "./.env.prod" : "./.env.local";
+const envFile = "./.env.prod";
+// process.env.NODE_ENV === "PRODUCTION" ? "./.env.prod" : "./.env.local";
 
 dotenv.config({
   path: envFile,
@@ -19,18 +19,18 @@ if (!DATABASE_URL) {
 }
 
 const dbCred = () => {
-  if (process.env.NODE_ENV === "PRODUCTION") {
-    const sql = neon(DATABASE_URL);
-    return neonDrizzle({
-      client: sql,
-      schema,
-    });
-  } else {
-    const client = postgres(DATABASE_URL);
-    return postgreDrizzle({
-      client,
-      schema,
-    });
-  }
+  // if (process.env.NODE_ENV === "PRODUCTION") {
+  const sql = neon(DATABASE_URL);
+  return neonDrizzle({
+    client: sql,
+    schema,
+  });
+  // } else {
+  //   const client = postgres(DATABASE_URL);
+  //   return postgreDrizzle({
+  //     client,
+  //     schema,
+  //   });
+  // }
 };
 module.exports = { db: dbCred() };

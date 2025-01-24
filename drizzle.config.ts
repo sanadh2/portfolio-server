@@ -2,7 +2,7 @@ import { defineConfig } from "drizzle-kit";
 import dotenv from "dotenv";
 
 const envFile =
-  process.env.NODE_ENV === "production" ? "./.env.prod" : "./.env.local";
+  process.env.NODE_ENV === "PRODUCTION" ? "./.env.prod" : "./.env.local";
 
 dotenv.config({
   path: envFile,

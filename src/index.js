@@ -37,6 +37,8 @@ app.use("/skills", skillRoute);
 
 app.use("/workExperience", workExperienceRoute);
 
-module.exports = (req, res) => {
-  app(req, res);
-};
+// module.exports = (req, res) => {
+//   app(req, res);
+// };
+
+app.listen(3000);
