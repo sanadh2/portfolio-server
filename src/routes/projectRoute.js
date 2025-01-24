@@ -15,13 +15,15 @@ const messageBuilder = createMessageBuilder({
 
 router.get("/all", async (_, res) => {
   try {
+    logger.info("Fetching all projects...");
     const projects = await db.query.projectsTable.findMany({});
+    logger.info(`Fetched ${projects.length} projects`);
     res.status(200).json({
       success: true,
       projects,
     });
   } catch (error) {
-    console.log(error);
+    logger.error("Error fetching all projects:", error);
     res.status(500).json({ success: false, message: "something went wrong" });
   }
 });
@@ -29,16 +31,21 @@ router.get("/all", async (_, res) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
+    logger.info(`Fetching project with id: ${id}`);
+
     if (!isValidUUID(id)) {
+      logger.warn(`Invalid UUID format for id: ${id}`);
       next();
     }
+
     const projects = await db.query.projectsTable.findMany({});
+    logger.info(`Fetched project details for id: ${id}`);
     res.status(200).json({
       success: true,
       projects,
     });
   } catch (error) {
-    console.log(error);
+    logger.error(`Error fetching project with id: ${req.params.id}`, error);
     res.status(500).json({ success: false, message: "something went wrong" });
   }
 });
@@ -62,22 +69,24 @@ const newProjectSchema = z.object({
 
 router.post("/new", async (req, res) => {
   try {
+    logger.info("Creating new project...");
     const { success, data, error } = newProjectSchema.safeParse(req.body);
     if (!success) {
       const zodError = messageBuilder(error.issues).toString();
+      logger.warn(`Invalid data for new project: ${zodError}`);
       return res
         .status(400)
         .json({ success: false, message: "invalid data", error: zodError });
     }
     const [project] = await db.insert(projectsTable).values(data).returning();
 
-    logger.info("new project created with id\t", project.id);
+    logger.info(`New project created with id: ${project.id}`);
     res.status(200).json({
       success: true,
       project,
     });
   } catch (err) {
-    console.log(err);
+    logger.error("Error creating new project:", err);
     res.status(500).json({ success: false, message: "something went wrong" });
   }
 });
@@ -85,13 +94,16 @@ router.post("/new", async (req, res) => {
 router.post("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`Deleting project with id: ${id}`);
+
     await db.delete(projectsTable).where(eq(projectsTable.id, id));
-    logger.info("project deleted with id\t", id);
+    logger.info(`Project deleted with id: ${id}`);
+
     res.status(200).json({
       success: true,
     });
   } catch (err) {
-    console.log(err);
+    logger.error(`Error deleting project with id: ${req.params.id}`, err);
     res.status(500).json({ success: false, message: "something went wrong" });
   }
 });
@@ -99,26 +111,32 @@ router.post("/delete/:id", async (req, res) => {
 router.put("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`Updating project with id: ${id}`);
+
     const { success, data, error } = newProjectSchema.safeParse(req.body);
     if (!success) {
       const zodError = messageBuilder(error.issues).toString();
+      logger.warn(
+        `Invalid data for update on project id: ${id}, error: ${zodError}`
+      );
       return res
         .status(400)
         .json({ success: false, message: "invalid data", error: zodError });
     }
+
     const [project] = await db
       .update(projectsTable)
       .set(data)
       .where(eq(projectsTable.id, id))
       .returning();
 
-    logger.info("project updated with id\t", project.id);
+    logger.info(`Project updated with id: ${project.id}`);
     res.status(200).json({
       success: true,
       project,
     });
   } catch (err) {
-    console.log(err);
+    logger.error(`Error updating project with id: ${req.params.id}`, err);
     res.status(500).json({ success: false, message: "something went wrong" });
   }
 });
