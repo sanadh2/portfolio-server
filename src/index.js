@@ -41,19 +41,17 @@ app.use("/skills", skillRoute);
 
 app.use("/workExperience", workExperienceRoute);
 
-app.use("*", async (req, res) => {
-  try {
-    const method = req.method;
-    const reqUrl = req.url;
-    return res
-      .status(404)
-      .json(
-        "this api: " + reqUrl + " with method " + method + " is not allowed"
-      );
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json("something went wrong");
-  }
+app.all("*", (req, res) => {
+  const method = req.method;
+  const reqUrl = req.url;
+  res.status(404).json({
+    error: `API endpoint ${reqUrl} with method ${method} not allowed`,
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
 });
 
 // module.exports = (req, res) => {
