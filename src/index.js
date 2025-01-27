@@ -44,7 +44,7 @@ app.use("/workExperience", workExperienceRoute);
 app.use("*", async (req, res) => {
   try {
     const method = req.method;
-    const reqUrl = req.url();
+    const reqUrl = req.url;
     return res
       .status(404)
       .json(
