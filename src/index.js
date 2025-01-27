@@ -42,12 +42,20 @@ app.use("/skills", skillRoute);
 app.use("/workExperience", workExperienceRoute);
 
 app.use("*", async (req, res) => {
-  const method = req.method;
-  const reqUrl = req.url();
-  return res
-    .status(404)
-    .json("this api: " + reqUrl + " with method " + method + " is not allowed");
+  try {
+    const method = req.method;
+    const reqUrl = req.url();
+    return res
+      .status(404)
+      .json(
+        "this api: " + reqUrl + " with method " + method + " is not allowed"
+      );
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json("something went wrong");
+  }
 });
+
 // module.exports = (req, res) => {
 //   app(req, res);
 // };
