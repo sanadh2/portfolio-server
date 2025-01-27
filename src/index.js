@@ -21,7 +21,11 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({}));
+app.use(
+  cors({
+    credentials: true,
+  })
+);
 
 app.use(morgan("tiny"));
 
@@ -37,8 +41,15 @@ app.use("/skills", skillRoute);
 
 app.use("/workExperience", workExperienceRoute);
 
+app.use("*", async (req, res) => {
+  const method = req.method;
+  const reqUrl = req.url();
+  return res
+    .status(404)
+    .json("this api: " + reqUrl + " with method " + method + " is not allowed");
+});
 // module.exports = (req, res) => {
 //   app(req, res);
 // };
 
-app.listen(3000);
+app.listen(4000);
