@@ -25,8 +25,18 @@ const educationSchema = z.object({
       required_error: "Degree is required",
     })
     .min(1, "Degree cannot be empty"),
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  startDate: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Start date must be a valid date.",
+    })
+    .transform((val) => new Date(val)),
+  endDate: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "End date must be a valid date.",
+    })
+    .transform((val) => new Date(val)),
   location: z.string().optional().nullable(),
   logoUrl: z.string().url("Logo URL must be a valid URL").optional().nullable(),
 });
